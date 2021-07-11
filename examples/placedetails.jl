@@ -12,8 +12,6 @@ logtofile = retrieve(conf, "log", "log_to_file", Bool)
 loglevel = retrieve(conf, "log", "level", Int32)
 logpath = retrieve(conf, "log", "path")
 key = retrieve(conf, "googleAPI", "key")
-radius = retrieve(conf, "googleAPI", "radius")
-rankby = retrieve(conf, "googleAPI", "rankby")
 
 fields = ["name","rating","formatted_phone_number","address_component","opening_hours","geometry"]
 placeid = "ChIJMQOS9VovmEcRTPG4ZBnGOi0"
