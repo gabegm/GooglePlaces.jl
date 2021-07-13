@@ -33,7 +33,7 @@ function nearbysearch(
     urltype = "&type=$oftype"
     urlkey = "&key=$key"
 
-    global url = (
+    url = (
         urlbase
         * urllocation
         * urlradius
@@ -53,30 +53,28 @@ function nearbysearch(
         url *= urlname
     end
 
-    response = callapi(url)
-    response_body = String(response.body)
-    global json = JSON3.read(response_body) # read JSON string
-    global json_flattened = flatten_json.(json.results)
-    global pagecount = 0
-
-    while "next_page_token" in keys(json) && pagecount <= pages
-        global json
-        global url
-        global json_flattened
-        global pagecount
-
-        pagecount += 1
-        urlnextpagetoken = "&pagetoken=$(json["next_page_token"])"
-        _url = url * urlnextpagetoken
-        response = callapi(_url)
-        response_body = String(response.body)
-        json = JSON3.read(response_body) # read JSON string
-        _json_flattened = flatten_json.(json.results)
-        append!(json_flattened, _json_flattened)
-    end
+    json_flattened = transformresults(url, pages)
 
     table = Tables.dictrowtable(json_flattened) # treat a json object of arrays or array of objects as a "table"
     df = DataFrame(table) # turn table into DataFrame
 
     return df
+end
+
+function transformresults(url::String, pages::Int64)
+    pagecount = 0
+    urlnextpagetoken = ""
+    d = []
+
+    while true
+        response = String(callapi(url * urlnextpagetoken).body)
+        json = JSON3.read(response) # read JSON string
+        json_flattened = flatten_json.(json.results)
+        append!(d, json_flattened)
+        pagecount += 1
+
+        "next_page_token" in keys(json) && pagecount < pages || break
+        urlnextpagetoken = "&pagetoken=$(json["next_page_token"])"
+    end
+    return d
 end
