@@ -19,9 +19,8 @@ function placedetails(
         * urlkey
     )
 
-    response = callapi(url)
-    response_body = String(response.body)
-    json = JSON3.read(response_body) # read JSON string
+    response = String(callapi(url).body)
+    json = JSON3.read(response) # read JSON string
     json_flattened = flatten_json(json.result)
 
     table = Tables.dictrowtable(json_flattened) # treat a json object of arrays or array of objects as a "table"
