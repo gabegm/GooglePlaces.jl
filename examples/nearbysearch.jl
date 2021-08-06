@@ -2,6 +2,7 @@ import Pkg
 
 Pkg.activate(".")
 Pkg.instantiate()
+Pkg.status()
 
 using GooglePlaces
 using DataFrames

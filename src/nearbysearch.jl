@@ -1,4 +1,4 @@
-using GooglePlaces
+using GooglePlaces: callapi
 using JSON3, Tables, DataFrames
 
 function nearbysearch(
