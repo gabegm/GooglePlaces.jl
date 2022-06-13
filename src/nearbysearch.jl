@@ -58,6 +58,9 @@ function nearbysearch(
     table = Tables.dictrowtable(json_flattened) # treat a json object of arrays or array of objects as a "table"
     df = DataFrame(table) # turn table into DataFrame
 
+    _url = replace(url, key => "")
+    df[!, :url] = [_url for _ in 1:nrow(df)]
+
     return df
 end
 
