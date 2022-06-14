@@ -60,6 +60,7 @@ function nearbysearch(
 
     _url = replace(url, key => "")
     df[!, :url] = [_url for _ in 1:nrow(df)]
+    @info _url
 
     return df
 end
